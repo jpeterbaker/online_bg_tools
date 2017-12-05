@@ -14,10 +14,10 @@ Each type of page has advantages over the other:
 1) Play Page advantages:
       * If the game is still active, players must use the Play Page to specify their next move.
       * All parts of game states are shown on Play Pages (Archive Pages sometimes omit some information, e.g. a list of captured pieces).
+      * The time at which each move was made is only shown on the Play Page.
 2) Archive Page advantages:
-      * Previous game states can only be seen on Archive Pages.
-      * Archive Pages show the complete game histories in a convenient format.
-      * The start and end times of the games are only shown on Arhcive Pages.
+      * Previous game states can only be seen visually on Archive Pages.
+      * Archive Pages show the complete game histories using convenient simple notation (e.g. A3-A2) whereas Play Pages often use verbal descriptions (e.g. North moves a pawn from A2 to A3).
 
 SDG does not provide an easy way to change between these views.
 The only way I have found to access the Archive Page of an ongoing game (or the Play Page of an ended game)
