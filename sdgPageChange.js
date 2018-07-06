@@ -27,7 +27,7 @@ javascript:(function(){
             ["Accasta","accasta"],
             ["Afrika","afrika"],
             ["Alak","alak"],
-            ["Alfred&#39;s Wyke","wyke"],
+            ["Alfred's Wyke","wyke"],
             ["Alien City","acity"],
             ["Amazons","amazons"],
             ["Archimedes","archimedes"],
@@ -136,7 +136,7 @@ javascript:(function(){
             ["Tumblewords","tumble"],
             ["Volcano","volcano"],
             ["Witch Stones","witch"],
-            ["Wizard&#39;s Garden","garden"],
+            ["Wizard's Garden","garden"],
             ["Zendo","zen"],
         ]);
         shortGameName = nameMap.get(gameName);
