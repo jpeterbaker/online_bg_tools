@@ -3,7 +3,7 @@ README for sdgPageChange.js
 ==========
 Background
 ==========
-The website www.superdupergames.org (SDG) allows users to play many boardgames with each others asychronously
+The website www.superdupergames.org (SDG) allows users to play many board games with each others asychronously
 (in the style of chess-by-mail).
 When displaying the state of a game (i.e. the board and pieces), there are two different display formats:
 1) Play Pages
@@ -40,7 +40,7 @@ To use the script
 
 To test the bookmarklet,
 
-1) Navigate the browser to any SDG game page (Play Page of Archive Page)
+1) Navigate the browser to any SDG game page (a Play Page or Archive Page)
 2) Click the bookmark
 3) Ensure that the page for that game of the opposite type has been opened
 
