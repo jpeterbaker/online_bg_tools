@@ -24,7 +24,7 @@ The only way I have found to access the Archive Page of an ongoing game (or the 
 is to copy the game number from the URL and paste it in the base URL of the other page type.
 
 This little project is to make it easy to change between page types.
-What I have written is a Javascript function that parses the URL and HTML of the current page and
+What I have written is a Javascript function that parses the URL of the current page and
 opens a new tab displaying the opposite page type.
 To be as easy to use as possible, this Javascript is meant to be used as a browser bookmarklet.
 
@@ -40,7 +40,15 @@ To use the script
 
 To test the bookmarklet,
 
-1) Navigate the browser to any SDG game page (a Play Page or Archive Page)
-2) Click the bookmark
-3) Ensure that the page for that game of the opposite type has been opened
+1) Navigate the browser to any SDG game page (a Play Page or Archive Page).
+2) Click the bookmark.
+3) Ensure that the page for that game of the opposite type has been opened.
 
+==========================
+IF IT DOESN'T WORK FOR YOU
+==========================
+Try removing "false" from "return false;" on line 17.
+
+I mostly test with Chrome.
+I've heard that this change is necessary on some versions of other browsers.
+If that doesn't work either, please let me know.
