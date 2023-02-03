@@ -229,7 +229,15 @@ function go_next(current_table){
     // If the current table is not at the front (or current_table is null and queue is empty),
     // then the user has navigated in an unexpected way and the queue of active games is probably out of dat
     //     We need to visit the list page to get the active games
-    let top = peek_queue(true);
+    let top;
+    if(current_table==null){
+        // We are on the list page, so look at but do not change the top of the queue
+        top = peek_queue();
+    }
+    else{
+        // We are on a table, so take this page off the queue
+        top = peek_queue(true);
+    }
     dprint('popped '+top);
     dprint('new queue '+get_cookie_value(queue_cookie_name()));
     if(top==null){
