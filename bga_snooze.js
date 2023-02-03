@@ -10,7 +10,7 @@
 // @noframes
 // ==/UserScript==
 
-var debugging = 1;
+var debugging = 0;
 
 // Convenience function from
 // https://github.com/Tampermonkey/tampermonkey/issues/1279
