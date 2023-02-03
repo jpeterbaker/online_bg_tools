@@ -283,6 +283,7 @@ function go_next(current_table){
 // USER ACTIONS //
 //////////////////
 function snooze_clicked(minutes=60){
+    // TODO warn the user if the snooze time is close to their time remaining (say, if they'll have less than an 10 minutes left once the snooze expires)
     let table = get_url_param('table');
     set_cookie(snooze_cookie_name(table)+'=y',minutes);
     go_next(table);
@@ -386,7 +387,7 @@ window.snooze_functions = {snooze_clicked,clear_all_clicked,skip_clicked};
     var table = get_url_param('table');
 
     if(is_snoozed(table)){
-        // Go to the next table
+        // TODO replace alert with a notification and skip button on the page itself
         alert("This table is snoozed. Upcoming functionality: an option to skip it before it loads.")
         return;
     }

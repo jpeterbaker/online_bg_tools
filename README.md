@@ -10,7 +10,7 @@ The file `bga_snooze.js` is a Tampermonkey script that adds buttons to BGA pages
 that allow you to "snooze" games that you don't want to be shown for a while.
 By selecting the new "Go to unsnoozed game" button rather than BGA's default
 "X tables are waiting for you" button,
-BGA will only show oyu tables that you have not snoozed
+BGA will only show you tables that you have not snoozed
 (or whose snooze timer has expired).
 The script uses cookies that time out when the snooze is over.
 
@@ -24,16 +24,28 @@ The script uses cookies that time out when the snooze is over.
 1. Save the file.
    - In the menu at the top, select File > Save.
 1. Go to any game table page on BGA.
-   - If you are at any tables, you should be taken to one by navigating to [https://boardgamearena.com/play](https://boardgamearena.com/play).
-1. Use the black "Go to unsnoozed game" button to go to another game you have not snoozed.
+   - If you are the active player at any tables, you should be taken to a table where it is your turn by navigating to [https://boardgamearena.com/play](https://boardgamearena.com/play).
+1. Take your turn at this table (or not).
+1. Use the black "Go to unsnoozed game" button to go to a different table where it is your turn.
 1. If you don't want to see a game again for an hour, click the "Snooze 1 hr" button.
-1. If you want to cancel all snoozes (making all games available to appear again), click the purple "Clear all snoozes."
+1. If you want to cancel all snoozes (making all games available to appear again), click the purple "Clear all snoozes" button.
+
+I have no doubt there are bugs, and I hope you will tell me about the ones you find.
+Here are some intended (or unavoidable) behaviors that might surprise you:
+* If you access a table (and take a turn) via any method other than the buttons provided by the script, the script may subsequently present you with tables where it is no longer your turn.
+* The "Games in progress" page will sometimes load and then disappear. This is because the script loads this page in order to make a list of tables where it is your turn (if you know of a better way to get this info, let me know).
+* If you click directly on a link to a snoozed table, the script will notify you that the table is snoozed, but it will not prevent you from seeing it.
+
+This script is not meant to hide or change any official BGA features.
+You should be able to find the standard BGA buttons and they should do what they always did.
+Definitely let me know if the script or new buttons interfere with
+your ability to use the site while ignoring the new buttons.
 
 ## sdgPageChange.js
 
 ### Background
 
-The website www.superdupergames.org (SDG) allows users to play many board games with each others asychronously
+The website www.superdupergames.org (SDG) allows users to play many board games with each others asynchronously 
 (in the style of chess-by-mail).
 When displaying the state of a game (i.e. the board and pieces), there are two different display formats:
 1) Play Pages
