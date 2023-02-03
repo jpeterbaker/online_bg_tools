@@ -1,4 +1,15 @@
-README for sdgPageChange.js
+# Online board game tools
+
+These are a couple of small tools making it easier to play board games on some sites I like.
+
+## bga_snooze.js
+
+Board Game Arena has hundreds of board games available to play for free in real time or asynchronously.
+Sometimes when playing many games asynchrnously, I like to ignore some of my more difficult games until I have a chance to focus.
+This Tampermonkey script adds snooze buttons that automatically skip a game for a short period.
+The script uses cookies that timeout when the snooze is over.
+
+## sdgPageChange.js
 
 ==========
 Background
