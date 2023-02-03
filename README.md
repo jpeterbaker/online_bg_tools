@@ -4,10 +4,15 @@ These are a couple of small tools making it easier to play board games on some s
 
 ## bga_snooze.js
 
-Board Game Arena has hundreds of board games available to play for free in real time or asynchronously.
+The website [Board Game Arena](https://www.boardgamearena.com) (BGA) has hundreds of board games available to play for free in real time or asynchronously.
 Sometimes when playing many games asynchronously, I like to ignore some of my more difficult games until I have a chance to focus.
-This Tampermonkey script adds snooze buttons that automatically skip a game for a short period.
-The script uses cookies that timeout when the snooze is over.
+The file `bga_snooze.js` is a Tampermonkey script that adds buttons to BGA pages
+that allow you to "snooze" games that you don't want to be shown for a while.
+By selecting the new "Go to unsnoozed game" button rather than BGA's default
+"X tables are waiting for you" button,
+BGA will only show oyu tables that you have not snoozed
+(or whose snooze timer has expired).
+The script uses cookies that time out when the snooze is over.
 
 1. Install the [Tampermonkey](https://tampermonkey.net/) extension for your browser.
 1. Look at the [raw bga_snooze.js](https://raw.githubusercontent.com/jpeterbaker/online_bg_tools/master/bga_snooze.js) file.
