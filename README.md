@@ -5,15 +5,29 @@ These are a couple of small tools making it easier to play board games on some s
 ## bga_snooze.js
 
 Board Game Arena has hundreds of board games available to play for free in real time or asynchronously.
-Sometimes when playing many games asynchrnously, I like to ignore some of my more difficult games until I have a chance to focus.
+Sometimes when playing many games asynchronously, I like to ignore some of my more difficult games until I have a chance to focus.
 This Tampermonkey script adds snooze buttons that automatically skip a game for a short period.
 The script uses cookies that timeout when the snooze is over.
 
+1. Install the [Tampermonkey](https://tampermonkey.net/) extension for your browser.
+1. Look at the [raw bga_snooze.js](https://raw.githubusercontent.com/jpeterbaker/online_bg_tools/master/bga_snooze.js) file.
+1. Copy the entire file.
+1. Open your Tampermonkey extension.
+1. Open a new script by selecting a plus icon (+) or the menu option "Create a new script."
+   - You should see a blank document.
+1. Paste the file contents into that document.
+1. Save the file.
+   - In the menu at the top, select File > Save.
+1. Go to any game table page on BGA.
+   - If you are at any tables, you should be taken to one by navigating to [https://boardgamearena.com/play](https://boardgamearena.com/play).
+1. Use the black "Go to unsnoozed game" button to go to another game you have not snoozed.
+1. If you don't want to see a game again for an hour, click the "Snooze 1 hr" button.
+1. If you want to cancel all snoozes (making all games available to appear again), click the purple "Clear all snoozes."
+
 ## sdgPageChange.js
 
-==========
-Background
-==========
+### Background
+
 The website www.superdupergames.org (SDG) allows users to play many board games with each others asychronously
 (in the style of chess-by-mail).
 When displaying the state of a game (i.e. the board and pieces), there are two different display formats:
@@ -39,9 +53,8 @@ What I have written is a Javascript function that parses the URL of the current 
 opens a new tab displaying the opposite page type.
 To be as easy to use as possible, this Javascript is meant to be used as a browser bookmarklet.
 
-=================
-To use the script
-=================
+### To use the script
+
 1) Open sdgPageChange.js in a text editor.
 2) Copy the entire file contents.
 3) Open a web browser.
@@ -55,9 +68,8 @@ To test the bookmarklet,
 2) Click the bookmark.
 3) Ensure that the page for that game of the opposite type has been opened.
 
-==========================
-IF IT DOESN'T WORK FOR YOU
-==========================
+### IF IT DOESN'T WORK FOR YOU
+
 Try removing "false" from "return false;" on line 17.
 
 I mostly test with Chrome.
