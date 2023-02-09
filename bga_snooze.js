@@ -4,7 +4,8 @@
 // @version      0.1
 // @description  Add snooze button to BGA tables
 // @author       Babamots
-// @match        *://boardgamearena.com/*
+// @match        *://boardgamearena.com/gameinprogress*
+// @match        *://boardgamearena.com/*/*?table=*
 // @icon         https://i.imgur.com/dGP5Nqv.png
 // @grant        none
 // @noframes
@@ -387,6 +388,7 @@ window.snooze_functions = {snooze_clicked,clear_all_clicked,skip_clicked};
     var table = get_url_param('table');
 
     if(is_snoozed(table)){
+        // Go to the next table
         // TODO replace alert with a notification and skip button on the page itself
         alert("This table is snoozed. Upcoming functionality: an option to skip it before it loads.")
         return;
