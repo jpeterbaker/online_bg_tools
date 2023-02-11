@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BGA Snooze
 // @namespace    https://jpeterbaker.github.io/
-// @version      0.1
+// @version      0.2
 // @description  Add snooze button to BGA tables
 // @author       Babamots
 // @match        *://boardgamearena.com/gameinprogress*
@@ -193,6 +193,35 @@ function get_url_param(name, url = window.location.href) {
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
+function low_time_remaining(minutes=60){
+    // Is the player's time remaining less than the input number of minutes?
+    // RIGHT NOW, THIS WILL ONLY WORK FOR minutes=60
+    // The problem is that the time indicator is language dependent,
+    // so is it is difficult get time remaining as a number.
+    // TODO try to adapt this for other time intervals
+
+    // BGA seems to use (ordinary) Arabic numerals in every language
+    // and to separate minutes from seconds with a colon (once time is under an hour).
+    // Also, BGA's countdown ticks down from "2 days" to "36 hours".
+    // It seems that we can detect when the player has less than 1 hour by checking for a colon
+    // and detect when the player has less than 2 hours by checking if the only digit in the time is a "1"
+
+    // Get the text from the timer box
+    let time = document.querySelector('.timeToThink').innerText;
+    if(time.indexOf(':') >= 0){
+        // Time has a colon in it
+        // This only happens when time is under and hour
+        return true;
+    }
+    // Remove non-digit characters
+    let digits_only = time.replace(/[^0-9]/g,"");
+    if(digits_only == "1"){
+        // I believe this only happens when time is under two hours
+        return true;
+    }
+    return false;
+
+}
 //////////////////////
 // QUEUE MANAGEMENT //
 //////////////////////
@@ -225,25 +254,37 @@ function peek_queue(pop=false){
     return top;
 }
 function go_next(current_table){
-    // Ensure that the current table is at the front of the queue and then go to next table in queue
-    // If current table is null, just go to the first table in the queue
-    // If the current table is not at the front (or current_table is null and queue is empty),
-    // then the user has navigated in an unexpected way and the queue of active games is probably out of dat
-    //     We need to visit the list page to get the active games
+    /*
+    Ensure that the current table is at the front of the queue and then go to next table in queue.
+    If current table is null, just go to the first table in the queue.
+    If the current table is not at the front (or current_table is null and queue is empty),
+    then the user has navigated in an unexpected way and the queue of active games is probably out of date
+        We need to visit the list page to get the active games
+    This function will not DIRECTLY trigger a rebuild of the queue,
+    but it will redirect to the list page (with seeking turned on) if
+        * queue needs refreshing AND
+        * user is NOT alreaedy on list page (i.e. if current_table is not null)
+    */
     let top;
     if(current_table==null){
         // We are on the list page, so look at but do not change the top of the queue
         top = peek_queue();
+        dprint('peeked '+top);
     }
     else{
         // We are on a table, so take this page off the queue
         top = peek_queue(true);
+        dprint('popped '+top);
     }
-    dprint('popped '+top);
-    dprint('new queue '+get_cookie_value(queue_cookie_name()));
+    dprint('queue afterward '+get_cookie_value(queue_cookie_name()));
     if(top==null){
-        // There is no queue, go to the list to make one
+        // There is no queue
         dprint('no queue');
+        if(current_table==null){
+            // We're already on the list, so the queue is still empty after being built. There's nothing to do
+            return;
+        }
+        // We are not at the list, so we should go to the list page and make a queue
         go_list(true);
         return;
     }
@@ -263,14 +304,14 @@ function go_next(current_table){
     }
     if(top==null){
         // We just emptied the queue
+        // All games are inactive or snoozed
         if(current_table == null){
-            // The queue is empty after just being built. All games are inactive or snoozed
-            // Go to the un-seeking list page
+            // We are at the list, which is where BGA sends users when there are no active games
+            // Just stay here
             dprint('empty queue on list');
-            go_list(false,true);
             return;
         }
-        // so go to the list for more
+        // We're at a table now, but we need to go to the list and rebuild the queue
         dprint('refilling queue');
         go_list(true);
         return;
@@ -284,7 +325,13 @@ function go_next(current_table){
 // USER ACTIONS //
 //////////////////
 function snooze_clicked(minutes=60){
-    // TODO warn the user if the snooze time is close to their time remaining (say, if they'll have less than an 10 minutes left once the snooze expires)
+    // Add a snooze cookie for this table and go to another one
+    // subject to confirmation if time remaining is low
+    if(low_time_remaining(minutes)){
+        if(!confirm('It appears that you will have little or no time on your clock when the snooze expires. Are you sure this is what you want?')){
+            return;
+        }
+    }
     let table = get_url_param('table');
     set_cookie(snooze_cookie_name(table)+'=y',minutes);
     go_next(table);
@@ -302,7 +349,7 @@ function clear_all_clicked(){
 }
 function skip_clicked(){
     if(at_list()){
-        go_list(true,true);
+        build_queue_and_go(false);
         return;
     }
     let table = get_url_param('table');
@@ -311,26 +358,6 @@ function skip_clicked(){
 /////////////////
 // REDIRECTION //
 /////////////////
-function list_landing(){
-    // Handle arrival on list page
-    if( get_url_param('seeking') == null){
-        // We are on the list page, but not in seek mode. Just add the buttons and stay here.
-        add_list_buttons();
-        return;
-    }
-    // We are on the list page but should be redirected to an active table if possible
-    // Build the queue when the page finishes loading
-
-    function do_the_rest(){
-        build_queue();
-        // Go to the first active table and remove this page visit from the history
-        // (if user hits back, this brief visit to the list page should not appear)
-        // The go_next function will handle detection of snoozed tables
-        go_next(null,true);
-    }
-    //run_when_ready('.gametable_content',build_queue);
-    run_when_ready('.tableplace_activeplayer_current',do_the_rest);
-}
 function go_list(seeking=false,exclude_history=false){
     // Go back to the game list
     let dest = 'https://boardgamearena.com/gameinprogress';
@@ -354,8 +381,8 @@ function go_table(table,exclude_history=false){
     // Set exclude_history true to prevent current page from being in the history and back-button-queue
     dalert('going to table'+table);
     if(table==null){
-        // We reached the end of the queue or the
-        go_list(true,exclude_history);
+        // We're on the list page. We reached the end of the queue or the user clicked "skip"
+        build_queue_and_go(exclude_history);
         return;
     }
 
@@ -367,6 +394,15 @@ function go_table(table,exclude_history=false){
         window.location.href = dest;
     }
 }
+function build_queue_and_go(exclude_history=false){
+    // Run this while on list page to build the queue and redirect to table
+    function subfun(){
+        build_queue();
+        let top = peek_queue();
+        go_next(null,exclude_history);
+    }
+    run_when_ready('.tableplace_activeplayer_current',subfun);
+}
 
 // Save the button-connected functions somewhere that remains accessible after this script runs
 window.snooze_functions = {snooze_clicked,clear_all_clicked,skip_clicked};
@@ -377,7 +413,18 @@ window.snooze_functions = {snooze_clicked,clear_all_clicked,skip_clicked};
     console.log('Snooze: cookie on entry',document.cookie);
 
     if(at_list()){
-        list_landing();
+        // Handle arriving on list page
+
+        // It's easier to add buttons even when we're going to be redirected than to postpone adding buttons
+        // until after checking the queue
+        add_list_buttons();
+        if(get_url_param('seeking') == null){
+            // We are on the list page, but not in seek mode
+            return;
+        }
+        // We are on the list page but should be redirected to an active table if possible
+        // Build the queue when the page finishes loading
+        build_queue_and_go(true);
         return;
     }
     if(!at_table()){
@@ -388,12 +435,16 @@ window.snooze_functions = {snooze_clicked,clear_all_clicked,skip_clicked};
     var table = get_url_param('table');
 
     if(is_snoozed(table)){
-        // Go to the next table
-        // TODO replace alert with a notification and skip button on the page itself
-        alert("This table is snoozed. Upcoming functionality: an option to skip it before it loads.")
-        return;
+        // Check if user really wants a snoozed table
+        if(!confirm('This table is snoozed. Would you like to visit it anyway?')){
+            // User declined to visit this table
+            go_list(false);
+            return;
+        }
+        // User wants to stay at this table
+        // Else, proceed a usual, including adding table buttons
     }
     // This is an unsnoozed table, we're staying here
-
     add_table_buttons();
 })();
+
