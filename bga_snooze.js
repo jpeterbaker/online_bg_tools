@@ -5,7 +5,15 @@
 // @description  Add snooze button to BGA tables
 // @author       Babamots
 // @match        *://boardgamearena.com/gameinprogress*
-// @match        *://boardgamearena.com/*/*?table=*
+// @match        *://boardgamearena.com/1/*?table=*
+// @match        *://boardgamearena.com/2/*?table=*
+// @match        *://boardgamearena.com/3/*?table=*
+// @match        *://boardgamearena.com/4/*?table=*
+// @match        *://boardgamearena.com/5/*?table=*
+// @match        *://boardgamearena.com/6/*?table=*
+// @match        *://boardgamearena.com/7/*?table=*
+// @match        *://boardgamearena.com/8/*?table=*
+// @match        *://boardgamearena.com/9/*?table=*
 // @icon         https://i.imgur.com/dGP5Nqv.png
 // @grant        none
 // @noframes
@@ -37,6 +45,7 @@ function run_when_ready(readySelector, callback) {
     };
     tryNow();
 }
+
 function dalert(s){
     if(debugging){
         alert(s);
@@ -410,7 +419,7 @@ window.snooze_functions = {snooze_clicked,clear_all_clicked,skip_clicked};
 (function() {
     'use strict';
 
-    console.log('Snooze: cookie on entry',document.cookie);
+    console.log('SNOOZE running');
 
     if(at_list()){
         // Handle arriving on list page
