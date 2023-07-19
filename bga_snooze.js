@@ -1,19 +1,19 @@
 // ==UserScript==
 // @name         BGA Snooze
 // @namespace    https://jpeterbaker.github.io/
-// @version      0.2
+// @version      0.5
 // @description  Add snooze button to BGA tables
 // @author       Babamots
 // @match        *://boardgamearena.com/gameinprogress*
 // @match        *://boardgamearena.com/1*/*?table=*
-// @match        *://boardgamearena.com/2/*?table=*
-// @match        *://boardgamearena.com/3/*?table=*
-// @match        *://boardgamearena.com/4/*?table=*
-// @match        *://boardgamearena.com/5/*?table=*
-// @match        *://boardgamearena.com/6/*?table=*
-// @match        *://boardgamearena.com/7/*?table=*
-// @match        *://boardgamearena.com/8/*?table=*
-// @match        *://boardgamearena.com/9/*?table=*
+// @match        *://boardgamearena.com/2*/*?table=*
+// @match        *://boardgamearena.com/3*/*?table=*
+// @match        *://boardgamearena.com/4*/*?table=*
+// @match        *://boardgamearena.com/5*/*?table=*
+// @match        *://boardgamearena.com/6*/*?table=*
+// @match        *://boardgamearena.com/7*/*?table=*
+// @match        *://boardgamearena.com/8*/*?table=*
+// @match        *://boardgamearena.com/9*/*?table=*
 // @icon         https://i.imgur.com/dGP5Nqv.png
 // @grant        none
 // @noframes
@@ -508,7 +508,7 @@ window.snooze_functions = {snooze_clicked,clear_all_clicked,skip_clicked,snooze_
 
     if(at_list()){
         // Handle arriving on list page
-
+        dalert('on list page');
         // It's easier to add buttons even when we're going to be redirected than to postpone adding buttons
         // until after checking the queue
         add_list_buttons();
@@ -523,8 +523,10 @@ window.snooze_functions = {snooze_clicked,clear_all_clicked,skip_clicked,snooze_
     }
     if(!at_table()){
         // This is neither the list page nor a table, so there's nothing to do
+        dalert('NOT on list or table page');
         return;
     }
+    dalert('on table page');
     // This is a table page
     var table = get_url_param('table');
 
