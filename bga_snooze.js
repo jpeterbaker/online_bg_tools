@@ -89,13 +89,13 @@ function add_table_buttons(){
     container.id = 'snooze_container';
     bar.insertBefore(container,bar.firstChild);
 
-    // Clear-all button
+    // Skip button
     let button = document.createElement('a');
-    button.id = 'clear_snooze_button';
+    button.id = 'snooze_skip_button';
     button.setAttribute('class','bgabutton');
-    button.setAttribute('style',"background-color:purple;margin:5px");
-    button.setAttribute('onclick','window.snooze_functions.clear_all_clicked()');
-    button.innerText = 'Clear all snoozes';
+    button.setAttribute('style',"background-color:red;margin:5px");
+    button.setAttribute('onclick','window.snooze_functions.skip_clicked()');
+    button.innerText = 'Go to unsnoozed game';
     container.appendChild(button);
 
     // Snooze button
@@ -116,14 +116,15 @@ function add_table_buttons(){
     button.innerText = 'Snooze all matching games 1 hr';
     container.appendChild(button);
 
-    // Skip button
+    // Clear-all button
     button = document.createElement('a');
-    button.id = 'snooze_skip_button';
+    button.id = 'clear_snooze_button';
     button.setAttribute('class','bgabutton');
-    button.setAttribute('style',"background-color:black;margin:5px");
-    button.setAttribute('onclick','window.snooze_functions.skip_clicked()');
-    button.innerText = 'Go to unsnoozed game';
+    button.setAttribute('style',"background-color:purple;margin:5px");
+    button.setAttribute('onclick','window.snooze_functions.clear_all_clicked()');
+    button.innerText = 'Clear all snoozes';
     container.appendChild(button);
+
 }
 function add_list_buttons(){
     // Add buttons to display on list page (/gameinprogress)
