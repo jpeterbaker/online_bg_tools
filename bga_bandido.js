@@ -25,6 +25,9 @@ function get_deck_counts(){
     for(collection of [board,hand]){
         for(node of collection){
             id = node_to_id(node);
+            if(id == undefined){
+                continue;
+            }
             deck[card_exiti[id]] -= 1;
         }
     }
@@ -56,7 +59,8 @@ function make_container(){
         count_node.id = 'count_label_' + exiti;
         count_node.style.width = '100%';
         count_node.style.textAlign = 'center';
-        count_node.style.fontSize = '32';
+        count_node.style.fontSize = '33px';
+        count_node.style.paddingTop = '33px';
         count_node.style.color = 'white';
         count_node.innerHTML = 0;
         card_node.appendChild(count_node);
@@ -66,11 +70,13 @@ function make_container(){
 function update_card_counters(){
     // Update the text on each card graphic to show how many remain in the deck
     var deck_counts = get_deck_counts();
-    var i,exiti,count_node;
-    for(i=0;i<exit_repr.length;i++){
-        exiti = card_exiti[i];
+    var exiti,count_node;
+    for(exiti=0;exiti<exit_repr.length;exiti++){
         count_node = document.getElementById('count_label_' + exiti);
         count_node.innerHTML = deck_counts[exiti];
+        if(deck_counts[exiti] == 0){
+            count_node.style.color = 'red';
+        }
     }
 }
 
