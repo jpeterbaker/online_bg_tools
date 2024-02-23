@@ -10,10 +10,19 @@
 // @noframes
 // ==/UserScript==
 
+async function pause(t) {
+    // Pause for t milliseconds
+	return new Promise(
+		resolve => {
+			setTimeout(resolve,t);
+		}
+	);
+}
+
+window.pause = pause;
+
 (function() {
     'use strict';
-
-    console.log('NOTICE BLOCKER running');
 
     // Log entries matching this regex will be hidden
     // Change this to match your language
@@ -21,14 +30,32 @@
 
     const observer = new MutationObserver(function(mutations_list) {
 	mutations_list.forEach(function(mutation) {
-		mutation.addedNodes.forEach(function(added_node) {
+		mutation.addedNodes.forEach(async function(added_node) {
 			if(notif_regex.test(added_node.innerText)) {
-                // I don't know why, but BGA always changes the style back.
-                // Adding a custom attribute lets you hide the element with something like Stylebot
-                added_node.setAttribute('style','display:none');
+                // BGA always sets the style to block after the node is created
+                // For me, there's about a quarter of a second
+                // My solution is to check the style until BGA's change is detected
+                // At 1 check per 50 ms, I can't see anything strange in the log
+                var count = 0;
+                while(true){
+                    if(added_node.style.display == 'block'){
+                        added_node.style.setProperty('display','none');
+                        console.log('Hiding notification',added_node);
+                        break;
+                    }
+                    if(added_node.style.display != 'none'){
+                        added_node.style.setProperty('display','none');
+                    }
+                    await pause(50);
+                    // Yes, this could be a for loop, but while(true) emphasizes the intent
+                    ++count;
+                    if(count > 50){
+                        console.log('Exiting after 50 checks.');
+                        console.log('Problem node:',added_node);
+                        break;
+                    }
+                }
                 added_node.setAttribute('nevershow','y');
-                console.log('Hiding notification',added_node);
-
 			}
 		});
 	});
